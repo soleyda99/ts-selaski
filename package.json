@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run:test1":"ts-node test1.ts",
-    "run:test2":"ts-node test2.ts"
-
+    "run:test1": "ts-node test1.ts"
   },
   "keywords": [],
   "author": "",

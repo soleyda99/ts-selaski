@@ -1,31 +1,47 @@
 const calculoClico1 = (cifra: number) => {
-  const teclado: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  let teclado: number[] = [9, 7, 0, 1, 2, 3, 4, 5, 6, 8];
+  let suma: number = 0;
+  let indexAnterior: number = 0;
 
+  const tecladoReverse = [...teclado].reverse();
   const convertCifraArray: number[] = Array.from(String(cifra), Number);
 
-  let indexProcesador: number[] = [];
-
   for (let i = 0; i < convertCifraArray.length; i++) {
-    for (let j = 0; j < teclado.length; j++) {
-      if (convertCifraArray[i] === teclado[j]) {
-        //si el numero de la cifra coincide con el numero del teclado se guarda el index
-        indexProcesador.push(teclado.indexOf(teclado[j]));
+    const tecladoIndexOf = teclado.indexOf(convertCifraArray[i]);
+    if (i === 0) {
+      suma = suma + tecladoIndexOf;
+      indexAnterior = tecladoIndexOf;
+    } else {
+      if (esAntes({teclado:teclado,num:convertCifraArray[i],indexAnterior:indexAnterior})) {
+        let newSuma = teclado.length - indexAnterior - 1 + (teclado.length - tecladoIndexOf - 1);
+        suma = suma + newSuma;
+        indexAnterior = tecladoIndexOf;
+
+        teclado = [...tecladoReverse];
+        indexAnterior = teclado.length - indexAnterior - 1;
+      } else {
+        let newSuma = tecladoIndexOf - indexAnterior;
+        suma = suma + newSuma;
+        indexAnterior = tecladoIndexOf;
+        teclado = [...teclado];
       }
     }
   }
-  let suma: number = 0;
-  let resta: number = 0;
-  indexProcesador.forEach((index) => {
-    suma < index ? (suma = index) : (resta = index);
-  });
-  let tiempoProcesador: number = 0;
-
-  if (resta === 0) {
-    tiempoProcesador = suma;
-  } else {
-    tiempoProcesador = suma + (suma - resta);
-  }
-
-  return "El tiempo del procesador es: " + tiempoProcesador + "ms";
+ return "el tiempo del procesador es : "+ suma + " ms"
 };
-console.log(calculoClico1(1297), "prueba");
+
+const esAntes = ({teclado, indexAnterior, num}:Antes) => {
+  const indexNum = teclado.indexOf(num);
+  let res: boolean = false;
+  if (indexNum < indexAnterior) {
+    res = true;
+  }
+  return res;
+};
+console.log(calculoClico1(1297));
+
+interface Antes {
+  teclado:number[],
+  indexAnterior:number,
+  num:number
+}
